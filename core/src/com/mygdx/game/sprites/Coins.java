@@ -21,6 +21,7 @@ public class Coins {
         posCoins = new Vector2(x, y);
         texture = new Texture("coinsheet.png");
         coinAni = new Animation(new TextureRegion(texture), 6, 0.9f);
+        System.out.print("HELLO");
     }
 
     public TextureRegion getCoins() {
