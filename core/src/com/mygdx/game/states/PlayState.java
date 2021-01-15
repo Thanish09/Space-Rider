@@ -69,7 +69,7 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         updateGround();
-        updateCoin();
+        updateCoin(dt);
 
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
@@ -149,7 +149,7 @@ public class PlayState extends State {
             }*/
         }
     }
-    private void updateCoin(){
+    private void updateCoin(float dt){
         //if(cam.position.x - (cam.viewportWidth / 2) > co.getPosCoins().x + co.getCoins().getWidth())
         //if(cam.position.x - (cam.viewportWidth) > (Coins.coins_width + coins_spacing) * coins_counts){
             int yui = 30 + rand.nextInt(fluctuation);
@@ -157,11 +157,11 @@ public class PlayState extends State {
 
             //for(int i = 0; i < 1; i++){
                 Coins co = coin.get(0);
-                if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionWidth() / 6){
+                if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionWidth()){
                     //co.reposition(co.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui);
                     for(int j = 0; j < coin.size; j++){
                         Coins coi = coin.get(j);
-                        coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui);
+                        coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui,dt);
                     }
                 }
             //}

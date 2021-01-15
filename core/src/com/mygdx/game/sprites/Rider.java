@@ -7,7 +7,7 @@ import com.mygdx.game.states.PlayState;
 
 public class Rider {
     private static final int GRAVITY =-15;
-    private static final int MOVEMENT=150;
+    private static final int MOVEMENT=250;
     private Vector3 position;
 //    private Vector3 shoot1Pos;
 //    private Vector3 shoot2Pos;

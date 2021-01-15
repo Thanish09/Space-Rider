@@ -20,8 +20,7 @@ public class Coins {
         //coins = new Texture("co.png");
         posCoins = new Vector2(x, y);
         texture = new Texture("coinsheet.png");
-        coinAni = new Animation(new TextureRegion(texture), 6, 0.9f);
-        System.out.print("HELLO");
+        coinAni = new Animation(new TextureRegion(texture), 6, 5f);
     }
 
     public TextureRegion getCoins() {
@@ -32,9 +31,8 @@ public class Coins {
         return posCoins;
     }
 
-    public void reposition(float x,float y){
-
-        posCoins.set(x+200,y);
+    public void reposition(float x,float y, float dt){
+        posCoins.set(x+200,y);coinAni.update(dt);
     }
 
     public void dispose(){texture.dispose();}
