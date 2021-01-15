@@ -1,6 +1,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Project1;
@@ -9,12 +10,16 @@ public class GameOver extends State {
 
     private Texture background;
     private Texture gameOver;
+    //public Sound alienCrash;
+    //public Sound Crash;
 
     public GameOver(GameStateManager gsm) {
         super(gsm);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
         background = new Texture("bg.jpg");
         gameOver = new Texture("gameOver.png");
+      //  alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
+        //Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
     }
 
     @Override

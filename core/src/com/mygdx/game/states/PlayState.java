@@ -3,6 +3,7 @@ package com.mygdx.game.states;
 
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.Input;
+        import com.badlogic.gdx.audio.Sound;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.g2d.SpriteBatch;
         import com.badlogic.gdx.math.Vector2;
@@ -29,6 +30,8 @@ public class PlayState extends State {
     private Texture bg;
     private Texture ground;
     private Vector2 groundPos0, groundPos1, groundPos2, groundPos3;
+    public Sound alienCrash;
+    public Sound Crash;
     private Array<Obstacles> ob;
     private Array<Coins> coin;
     private Array<FlyingUfo> fly;
@@ -47,6 +50,8 @@ public class PlayState extends State {
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
         groundPos3 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth() + ground.getWidth(), GROUND_Y_OFFSET);
 
+        //alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
+        //Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
         rand = new Random();
         int xy = 30+ rand.nextInt(fluctuation);
         int coinss = 300 + rand.nextInt(500);
@@ -58,7 +63,8 @@ public class PlayState extends State {
         fly = new Array<FlyingUfo>();
         ob = new Array<Obstacles>();
         for (int i = 1; i <= OBSTACLES_COUNT; i++) {
-            ob.add(new Obstacles(i * (rand.nextInt(50) + OBSTACLES_SPACING + Obstacles.OBSTACLES_WIDTH)));
+            ob.add(new Obstacles(i * (OBSTACLES_SPACING + Obstacles.UFO_WIDTH)));
+            ob.add(new Obstacles(i * (OBSTACLES_SPACING + Obstacles.ALIEN_WIDTH)));
         }
         for (int i = 1; i < OBSTACLES_COUNT; i++) {
             fly.add(new FlyingUfo(i * (rand.nextInt(300) +OBSTACLES_SPACING2 + FlyingUfo.OBSTACLES_WIDTH)));
@@ -89,10 +95,17 @@ public class PlayState extends State {
         for (int i = 0; i < ob.size; i++) {
             Obstacles obs = ob.get(i);
             if (cam.position.x - (cam.viewportWidth / 2) > obs.getPosUfo().x + obs.getUfo().getWidth()) {
-                obs.reposition(obs.getPosUfo().x + ((obs.OBSTACLES_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
+                obs.reposition(obs.getPosUfo().x + ((obs.UFO_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
 
+            if (obs.collide1(rider.getBounds())) {
+                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
+                alienCrash.play(1f);
+                gsm.set(new GameOver(gsm));
+            }
             if (obs.collide(rider.getBounds())) {
+                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
+                Crash.play(1f);
                 gsm.set(new GameOver(gsm));
             }
         }
@@ -122,6 +135,7 @@ public class PlayState extends State {
 
         for (Obstacles obs : ob) {
             sb.draw(obs.getUfo(), obs.getPosUfo().x, obs.getPosUfo().y);
+            sb.draw(obs.getAlien(), obs.getPosAlien().x, obs.getPosAlien().y);
         }
         for (FlyingUfo flyUfo: fly) {
             sb.draw(flyUfo.getFlyingUfo(), flyUfo.getPosFly().x, flyUfo.getPosFly().y);
@@ -137,6 +151,8 @@ public class PlayState extends State {
         bg.dispose();
         rider.dispose();
         ground.dispose();
+        //Crash.dispose();
+        //alienCrash.dispose();
         for (Obstacles obs : ob) {
             obs.dispose();
         }

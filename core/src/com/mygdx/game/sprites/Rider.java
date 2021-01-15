@@ -1,9 +1,12 @@
 package com.mygdx.game.sprites;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
+import com.mygdx.game.states.PlayState;
 
 public class Rider {
     private static final int GRAVITY =-15;
@@ -14,6 +17,7 @@ public class Rider {
     private RiderAnimation riderAni;
     private Texture rider;
     private boolean colliding;
+    private Sound rideSound;
 
     public Rider(int x, int y)
     {
@@ -23,6 +27,8 @@ public class Rider {
         riderAni=new RiderAnimation(new TextureRegion(rider),2,0.1f);
         bounds= new Rectangle(x,y,rider.getWidth()/3,rider.getHeight());
         colliding=false;
+        rideSound= Gdx.audio.newSound(Gdx.files.internal("motor riding.mp3"));
+        rideSound.play(1.0f);
     }
     public void update(float dt)
     {
@@ -63,5 +69,6 @@ public class Rider {
     public void dispose()
     {
         rider.dispose();
+        rideSound.dispose();
     }
 }
