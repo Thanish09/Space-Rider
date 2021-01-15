@@ -86,12 +86,6 @@ public class PlayState extends State {
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
 
-        /*for(Coins co : coin){
-            if(cam.position.x - (cam.viewportWidth / 2) > co.getPosCoins().x + co.getCoins().getWidth()){
-                co.reposition(co.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),rand.nextInt(fluctuation));
-            }
-        }*/
-
         for (int i = 0; i < ob.size; i++) {
             Obstacles obs = ob.get(i);
             if (cam.position.x - (cam.viewportWidth / 2) > obs.getPosUfo().x + obs.getUfo().getWidth()) {
@@ -166,22 +160,16 @@ public class PlayState extends State {
         }
     }
     private void updateCoin(float dt){
-        //if(cam.position.x - (cam.viewportWidth / 2) > co.getPosCoins().x + co.getCoins().getWidth())
-        //if(cam.position.x - (cam.viewportWidth) > (Coins.coins_width + coins_spacing) * coins_counts){
-            int yui = 30 + rand.nextInt(fluctuation);
-            int iuy = 100 + rand.nextInt(400);
 
-            //for(int i = 0; i < 1; i++){
-                Coins co = coin.get(0);
-                if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionWidth()){
-                    //co.reposition(co.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui);
-                    for(int j = 0; j < coin.size; j++){
-                        Coins coi = coin.get(j);
-                        coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui,dt);
-                    }
-                }
-            //}
-        //}
+        int yui = 30 + rand.nextInt(fluctuation);
+        int iuy = 100 + rand.nextInt(400);
+        Coins co = coin.get(0);
+        if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionWidth()){
+            for(int j = 0; j < coin.size; j++){
+                Coins coi = coin.get(j);
+                coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui,dt);
+            }
+        }
     }
 
 }
