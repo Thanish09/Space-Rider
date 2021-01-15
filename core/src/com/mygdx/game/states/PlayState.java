@@ -13,8 +13,10 @@ package com.mygdx.game.states;
         import com.mygdx.game.sprites.Obstacles;
         import com.mygdx.game.sprites.Rider;
         import com.mygdx.game.sprites.FlyingUfo;
+        import com.mygdx.game.sprites.Bullet;
 
         import java.util.Random;
+        import java.util.ArrayList;
 
 
 public class PlayState extends State {
@@ -37,12 +39,19 @@ public class PlayState extends State {
     private Array<FlyingUfo> fly;
     private GameOver over;
     private Random rand;
+    // for bullets, the dynamic list is created. we do not know how many bullet will be shoot
+    ArrayList<Bullet> bullets; // the type of obj stored = Bullet and the name of this list = bullets
+    ArrayList<Bullet> bullets_to_remove;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
         rider = new Rider(10, 25);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
         bg = new Texture("bg.jpg");
+
+        // bullet code starts
+        bullets = new ArrayList<Bullet>(); // officially created the bullets list
+        // bullet code ends
 
         ground = new Texture("ground.png");
         groundPos0 = new Vector2(-200, GROUND_Y_OFFSET);
@@ -92,6 +101,19 @@ public class PlayState extends State {
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
 
+        //  bullet codes
+        bullets_to_remove = new ArrayList<Bullet>();
+        for (Bullet bullet : bullets) // will loop through each bullet
+        {
+            bullet.update_bullet(dt);
+            if(bullet.remove_bullet)
+            {
+                bullets_to_remove.add(bullet);
+            }
+        }
+        bullets.removeAll(bullets_to_remove); // will remove all the bullets added into this list
+        // bullet code ends
+
         for (int i = 0; i < ob.size; i++) {
             Obstacles obs = ob.get(i);
             if (cam.position.x - (cam.viewportWidth / 2) > obs.getPosUfo().x + obs.getUfo().getWidth()) {
@@ -128,6 +150,18 @@ public class PlayState extends State {
 
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(rider.getTexture(), rider.getPosition().x, rider.getPosition().y);
+
+        // bullet code..taking in input from the user
+        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+        {
+            bullets.add(new Bullet(rider.getPosition().y,rider.getPosition().x));  // this the place for you to add the bullets to the motorbike, the display part
+        }
+
+        for(Bullet bullet : bullets)
+        {
+            bullet.render_bullet(sb); // passing sb to it , sb will enters bullet.java
+        }
+        // bullet code ends
 
         for(Coins co : coin){
             sb.draw(co.getCoins(), co.getPosCoins().x, co.getPosCoins().y);
