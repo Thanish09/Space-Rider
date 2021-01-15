@@ -27,7 +27,7 @@ public class PlayState extends State {
     private static final int OBSTACLES_SPACING = 400;
     private static final int OBSTACLES_SPACING2 = 700;
     private static final int OBSTACLES_COUNT = 3;
-
+    //private Coins duit;
     private Rider rider;
     private Texture bg;
     private Texture ground;
@@ -65,10 +65,10 @@ public class PlayState extends State {
         int xy = 30+ rand.nextInt(fluctuation);
         int coinss = 300 + rand.nextInt(500);
         coin = new Array<Coins>();
+        //duit = new Coins(90,150);
         for(int i=1; i <= coins_counts; i++){
-            coin.add(new Coins((i * (coins_spacing + Coins.coins_width)) + coinss, xy));
+            coin.add(new Coins((i * (coins_spacing + (Coins.coins_width))) + coinss, xy));
         }
-
         fly = new Array<FlyingUfo>();
         ob = new Array<Obstacles>();
         for (int i = 1; i <= OBSTACLES_COUNT; i++) {
@@ -83,8 +83,13 @@ public class PlayState extends State {
 
     @Override
     public void handleInput() {
-        if (Gdx.input.justTouched()) {
+        /*if (Gdx.input.justTouched()) {
             rider.jump();
+        }*/
+        if (Gdx.input.justTouched()) {
+            if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
+                rider.jump();
+            }
         }
     }
 
@@ -96,10 +101,15 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         updateGround();
-        updateCoin(dt);
-
+        updateCoin();
+        //duit.update(dt);
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
+
+        for (int i = 0; i < coin.size; i++) {
+            Coins co = coin.get(i);
+            co.update(dt);
+        }
 
         //  bullet codes
         bullets_to_remove = new ArrayList<Bullet>();
@@ -152,9 +162,15 @@ public class PlayState extends State {
         sb.draw(rider.getTexture(), rider.getPosition().x, rider.getPosition().y);
 
         // bullet code..taking in input from the user
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
+        /*if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         {
             bullets.add(new Bullet(rider.getPosition().y,rider.getPosition().x));  // this the place for you to add the bullets to the motorbike, the display part
+        }*/
+        if(Gdx.input.justTouched()){
+            if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)
+            {
+                bullets.add(new Bullet(rider.getPosition().y,rider.getPosition().x));  // this the place for you to add the bullets to the motorbike, the display part
+            }
         }
 
         for(Bullet bullet : bullets)
@@ -184,6 +200,7 @@ public class PlayState extends State {
     public void dispose() {
         bg.dispose();
         rider.dispose();
+        //duit.dispose();
         ground.dispose();
         //Crash.dispose();
         //alienCrash.dispose();
@@ -209,15 +226,15 @@ public class PlayState extends State {
             groundPos3.add(ground.getWidth() * 3, 0);
         }
     }
-    private void updateCoin(float dt){
+    private void updateCoin(){
 
         int yui = 30 + rand.nextInt(fluctuation);
         int iuy = 100 + rand.nextInt(400);
         Coins co = coin.get(0);
-        if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionWidth()){
+        if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > co.getPosCoins().x + co.getCoins().getRegionX()){
             for(int j = 0; j < coin.size; j++){
                 Coins coi = coin.get(j);
-                coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui,dt);
+                coi.reposition(iuy + coi.getPosCoins().x + ((Coins.coins_width + coins_spacing)* coins_counts),yui);
             }
         }
     }
