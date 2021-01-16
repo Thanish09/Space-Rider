@@ -14,29 +14,22 @@ public class Obstacles {
 
     //public static final int OBSTACLES_WIDTH=52;
     public static final int UFO_WIDTH=52;
-    public static final int ALIEN_WIDTH=52;
+  //  public static final int ALIEN_WIDTH=52;
   //  private static final int FLUCTUATION = 130;
    // private static final int TUBE_GAP =100;
    // private static final int LOWEST_OPENING = 120
  //   private static final int FLUCTUATION =130;
-    private Texture ufo, alien;
-    private Vector2 posUfo, posAlien;
-    private Rectangle boundsUfo, boundsAlien;
+    private Texture ufo;
+    private Vector2 posUfo;
+    private Rectangle boundsUfo;
     private Random rand;
 
     public Obstacles(float x){
         ufo = new Texture("ufo.png");
-        alien = new Texture("alien.png");
         rand =new Random();
 
         posUfo= new Vector2(300+x, 20);
-        posAlien = new Vector2(x,10);
         boundsUfo= new Rectangle(posUfo.x, posUfo.y,ufo.getWidth(),ufo.getHeight());
-        boundsAlien = new Rectangle(posAlien.x,posAlien.y,alien.getWidth(),alien.getHeight());
-    }
-
-    public Texture getAlien() {
-        return alien;
     }
 
     public Texture getUfo() {
@@ -47,20 +40,10 @@ public class Obstacles {
         return posUfo;
     }
 
-    public Vector2 getPosAlien() {
-        return posAlien;
-    }
-
-    public Rectangle getBoundsAlien() {
-        return boundsAlien;
-    }
-
     public void reposition(float x)
     {
         posUfo.set(300+x, 20);
-        posAlien.set(x,10);
         boundsUfo.setPosition(posUfo.x,posUfo.y);
-        boundsAlien.setPosition(posAlien.x,posAlien.y);
     }
 
     public boolean collide(Rectangle player)
@@ -68,14 +51,8 @@ public class Obstacles {
         return player.overlaps(boundsUfo);//||player.overlaps(boundsAlien);
     }
 
-    public boolean collide1(Rectangle player)
-    {
-        return player.overlaps(boundsAlien);
-    }
-
     public void dispose()
     {
         ufo.dispose();
-        alien.dispose();
     }
 }

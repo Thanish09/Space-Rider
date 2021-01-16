@@ -12,6 +12,7 @@ package com.mygdx.game.states;
         import com.badlogic.gdx.utils.Null;
         import com.mygdx.game.Project1;
         import com.mygdx.game.sprites.Coins;
+        import com.mygdx.game.sprites.Alien;
         import com.mygdx.game.sprites.Obstacles;
         import com.mygdx.game.sprites.Rider;
         import com.mygdx.game.sprites.FlyingUfo;
@@ -26,8 +27,9 @@ public class PlayState extends State {
     private static final int fluctuation = 250;
     private static final int coins_counts = 15;
     private static final int GROUND_Y_OFFSET = -110;
-    private static final int OBSTACLES_SPACING = 400;
+    private static final int OBSTACLES_SPACING = 500;
     private static final int OBSTACLES_SPACING2 = 700;
+    private static final int OBSTACLE_SPACING3 = 500;
     private static final int OBSTACLES_COUNT = 3;
 
     private Rider rider;
@@ -38,6 +40,7 @@ public class PlayState extends State {
     public Sound Crash;
     public Sound duit;
     private Array<Obstacles> ob;
+    private Array<Alien> alien;
     private Array<Coins> coin;
     private Array<FlyingUfo> fly;
     private GameOver over;
@@ -88,12 +91,17 @@ public class PlayState extends State {
 
         fly = new Array<FlyingUfo>();
         ob = new Array<Obstacles>();
-        for (int i = 1; i <= OBSTACLES_COUNT; i++) {
+        alien = new Array<Alien>();
+        ob.add(new Obstacles(1*(250)));
+        for (int i = 2; i <= OBSTACLES_COUNT; i++) {
             ob.add(new Obstacles(i * (OBSTACLES_SPACING + Obstacles.UFO_WIDTH)));
-            ob.add(new Obstacles(i * (OBSTACLES_SPACING + Obstacles.ALIEN_WIDTH)));
         }
         for (int i = 1; i < OBSTACLES_COUNT; i++) {
             fly.add(new FlyingUfo(i * (rand.nextInt(300) +OBSTACLES_SPACING2 + FlyingUfo.OBSTACLES_WIDTH)));
+        }
+        alien.add(new Alien(1*(300)));
+        for (int i = 2; i < OBSTACLES_COUNT; i++) {
+            alien.add(new Alien(i * (OBSTACLE_SPACING3+ Alien.ALIEN_WIDTH)));
         }
     }
 
@@ -192,16 +200,6 @@ public class PlayState extends State {
             if (cam.position.x - (cam.viewportWidth / 2) > obs.getPosUfo().x + obs.getUfo().getWidth()) {
                 obs.reposition(obs.getPosUfo().x + ((obs.UFO_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
-
-            if (obs.collide1(rider.getBounds())) {
-                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-                alienCrash.play(1f);
-                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
-                Crash.play(0f);
-                duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
-                duit.play(0f);
-                gsm.set(new GameOver(gsm,YourScoreName));
-            }
             if (obs.collide(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
@@ -224,6 +222,23 @@ public class PlayState extends State {
                 alienCrash.play(0f);
                 duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
                 duit.play(0f);
+                gsm.set(new GameOver(gsm,YourScoreName));
+            }
+        }
+        for (int i = 0; i < alien.size; i++) {
+            Alien aliens = alien.get(i);
+
+            if (cam.position.x - (cam.viewportWidth / 2) > aliens.getPosAlien().x + aliens.getAlien().getWidth()) {
+                aliens.reposition(aliens.getPosAlien().x + ((aliens.ALIEN_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
+            }
+
+            if (aliens.collide(rider.getBounds())) {
+                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
+                alienCrash.play(1f);
+                duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
+                duit.play(0f);
+                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
+                Crash.play(0f);
                 gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
@@ -265,10 +280,12 @@ public class PlayState extends State {
 
         for (Obstacles obs : ob) {
             sb.draw(obs.getUfo(), obs.getPosUfo().x, obs.getPosUfo().y);
-            sb.draw(obs.getAlien(), obs.getPosAlien().x, obs.getPosAlien().y);
         }
         for (FlyingUfo flyUfo: fly) {
             sb.draw(flyUfo.getFlyingUfo(), flyUfo.getPosFly().x, flyUfo.getPosFly().y);
+        }
+        for (Alien aliens:alien) {
+            sb.draw(aliens.getAlien(), aliens.getPosAlien().x, aliens.getPosAlien().y);
         }
         sb.draw(ground, groundPos0.x, groundPos0.y);
         sb.draw(ground, groundPos1.x, groundPos1.y);
@@ -290,6 +307,9 @@ public class PlayState extends State {
         }
         for (FlyingUfo flyUfo : fly) {
             flyUfo.dispose();
+        }
+        for (Alien aliens: alien){
+            aliens.dispose();
         }
         for (Coins co: coin){
             co.dispose();
