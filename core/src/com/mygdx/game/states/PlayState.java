@@ -42,6 +42,8 @@ public class PlayState extends State {
     private GameOver over;
     private Random rand;
     private int count = 0;
+    private double multiplier = 0;
+    private int multi;
     private int score;
     private String YourScoreName;
 
@@ -113,6 +115,9 @@ public class PlayState extends State {
         //updateCoin();
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
+        multiplier += 0.2;
+        multi = (int)multiplier;
+        YourScoreName = "score: " + (score + multi);
         speed++;
         if(speed == 5000){
             rider.getspeed();
@@ -129,9 +134,9 @@ public class PlayState extends State {
                 co.setRemove(true); //when collide it becomes true
                 if(co.isRemove()){  //becomes true
                     coin.removeIndex(i);//remove that particular coin in array
-                    count = count + 1;
-                    score = count;
-                    YourScoreName = "score: " + score;
+                    count = count + 10;
+                    score += count;
+                    //YourScoreName = "score: " + score;
                 }
             }
         }
