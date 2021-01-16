@@ -38,6 +38,7 @@ public class PlayState extends State {
     private Vector2 groundPos0, groundPos1, groundPos2, groundPos3,groundPos4;
     public Sound alienCrash;
     public Sound Crash;
+    public Sound Fly;
     public Sound duit;
     private Array<Obstacles> ob;
     private Array<Alien> alien;
@@ -203,10 +204,6 @@ public class PlayState extends State {
             if (obs.collide(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
-                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-                alienCrash.play(0f);
-                duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
-                duit.play(0f);
                 gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
@@ -218,10 +215,6 @@ public class PlayState extends State {
             if (flyUfo.collideFly(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
-                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-                alienCrash.play(0f);
-                duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
-                duit.play(0f);
                 gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
@@ -235,10 +228,6 @@ public class PlayState extends State {
             if (aliens.collide(rider.getBounds())) {
                 alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
                 alienCrash.play(1f);
-                duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
-                duit.play(0f);
-                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
-                Crash.play(0f);
                 gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
@@ -299,9 +288,9 @@ public class PlayState extends State {
         bg.dispose();
         rider.dispose();
         ground.dispose();
-        Crash.dispose();
-        alienCrash.dispose();
-        duit.dispose();
+        //Crash.dispose();
+        //alienCrash.dispose();
+        //duit.dispose();
         for (Obstacles obs : ob) {
             obs.dispose();
         }
