@@ -5,11 +5,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
-import java.util.Random;
-
-
-import jdk.nashorn.internal.parser.Scanner;
-
 public class Coins {
     public static final int coins_width = 32;
     private Texture coins;
@@ -17,13 +12,16 @@ public class Coins {
     private Animation coinAni;
     private Texture texture;
     private Rectangle boundsCoins;
+    protected boolean hit, remove;
 
     public Coins(float x, float y){
         //coins = new Texture("co.png");
         posCoins = new Vector2(x, y);
         texture = new Texture("coinsheet.png");
         coinAni = new Animation(new TextureRegion(texture), 6, 0.5f);
-        boundsCoins= new Rectangle(posCoins.x, posCoins.y,texture.getWidth(),texture.getHeight());
+        boundsCoins= new Rectangle(posCoins.x, posCoins.y,texture.getWidth()/6,texture.getHeight());
+        hit = false;
+        remove = false;
     }
 
     public TextureRegion getCoins() {
@@ -36,13 +34,32 @@ public class Coins {
 
     public void reposition(float x,float y){
         posCoins.set(x+200,y);
-        //coinAni.update(dt);
         boundsCoins.setPosition(posCoins.x,posCoins.y);
+    }
+
+    public boolean isHit() {
+        return hit;
+    }
+
+    public boolean isRemove() {
+        return remove;
     }
 
     public void update(float dt)
     {
         coinAni.update(dt);
+    }
+
+    public Rectangle getBounds(){
+        return boundsCoins;
+    }
+
+    public boolean collide(Rectangle player){
+        return player.overlaps(boundsCoins);
+    }
+
+    public void setRemove(boolean disappear){
+        remove = disappear;
     }
 
     public void dispose(){texture.dispose();}

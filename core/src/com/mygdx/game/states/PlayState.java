@@ -8,6 +8,7 @@ package com.mygdx.game.states;
         import com.badlogic.gdx.graphics.g2d.SpriteBatch;
         import com.badlogic.gdx.math.Vector2;
         import com.badlogic.gdx.utils.Array;
+        import com.badlogic.gdx.utils.Null;
         import com.mygdx.game.Project1;
         import com.mygdx.game.sprites.Coins;
         import com.mygdx.game.sprites.Obstacles;
@@ -27,7 +28,7 @@ public class PlayState extends State {
     private static final int OBSTACLES_SPACING = 400;
     private static final int OBSTACLES_SPACING2 = 700;
     private static final int OBSTACLES_COUNT = 3;
-    //private Coins duit;
+
     private Rider rider;
     private Texture bg;
     private Texture ground;
@@ -65,7 +66,7 @@ public class PlayState extends State {
         int xy = 30+ rand.nextInt(fluctuation);
         int coinss = 300 + rand.nextInt(500);
         coin = new Array<Coins>();
-        //duit = new Coins(90,150);
+
         for(int i=1; i <= coins_counts; i++){
             coin.add(new Coins((i * (coins_spacing + (Coins.coins_width))) + coinss, xy));
         }
@@ -78,14 +79,10 @@ public class PlayState extends State {
         for (int i = 1; i < OBSTACLES_COUNT; i++) {
             fly.add(new FlyingUfo(i * (rand.nextInt(300) +OBSTACLES_SPACING2 + FlyingUfo.OBSTACLES_WIDTH)));
         }
-
     }
 
     @Override
     public void handleInput() {
-        /*if (Gdx.input.justTouched()) {
-            rider.jump();
-        }*/
         if (Gdx.input.justTouched()) {
             if (Gdx.input.getX() > Gdx.graphics.getWidth() / 2) {
                 rider.jump();
@@ -102,15 +99,32 @@ public class PlayState extends State {
         handleInput();
         updateGround();
         updateCoin();
-        //duit.update(dt);
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
+
+        int xy = 30+ rand.nextInt(fluctuation);
+        int coinss = 300 + rand.nextInt(500);
 
         for (int i = 0; i < coin.size; i++) {
             Coins co = coin.get(i);
             co.update(dt);
+
+            if(co.isRemove()){
+                coin.removeIndex(i);
+            }
+
+            if (co.collide(rider.getBounds())) {
+                co.setRemove(true);
+            }
         }
 
+        if(coin.size == 1){
+            if(cam.position.x - cam.viewportWidth - (cam.viewportWidth/2) > 300) {
+                for (int j = 1; j <= coins_counts; j++) {
+                    coin.add(new Coins((j * (coins_spacing + (Coins.coins_width))) + coinss, xy));
+                }
+            }
+        }
         //  bullet codes
         bullets_to_remove = new ArrayList<Bullet>();
         for (Bullet bullet : bullets) // will loop through each bullet
@@ -162,10 +176,6 @@ public class PlayState extends State {
         sb.draw(rider.getTexture(), rider.getPosition().x, rider.getPosition().y);
 
         // bullet code..taking in input from the user
-        /*if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
-        {
-            bullets.add(new Bullet(rider.getPosition().y,rider.getPosition().x));  // this the place for you to add the bullets to the motorbike, the display part
-        }*/
         if(Gdx.input.justTouched()){
             if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)
             {
