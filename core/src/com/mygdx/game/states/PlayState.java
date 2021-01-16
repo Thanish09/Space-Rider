@@ -217,7 +217,7 @@ public class PlayState extends State {
             }
             if (flyUfo.collideFly(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
-                Crash.play(0f);
+                Crash.play(1f);
                 alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
                 alienCrash.play(0f);
                 duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
