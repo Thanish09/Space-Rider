@@ -28,6 +28,8 @@ public class Rider {
         bounds= new Rectangle(x,y,rider.getWidth()/3,rider.getHeight());
         colliding=false;
         rideSound= Gdx.audio.newSound(Gdx.files.internal("motor riding.mp3"));
+        //rideSound.setLooping(rideSound.loop(),true);
+        rideSound.loop();
         rideSound.play(1.0f);
     }
     public void update(float dt)

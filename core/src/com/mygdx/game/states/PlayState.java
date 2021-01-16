@@ -36,6 +36,7 @@ public class PlayState extends State {
     private Vector2 groundPos0, groundPos1, groundPos2, groundPos3,groundPos4;
     public Sound alienCrash;
     public Sound Crash;
+    public Sound duit;
     private Array<Obstacles> ob;
     private Array<Coins> coin;
     private Array<FlyingUfo> fly;
@@ -67,7 +68,7 @@ public class PlayState extends State {
         bullets = new ArrayList<Bullet>(); // officially created the bullets list
         // bullet code ends
 
-        ground = new Texture("ground.jpg");
+        ground = new Texture("ground.png");
         groundPos0 = new Vector2(-200, GROUND_Y_OFFSET);
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
@@ -148,6 +149,8 @@ public class PlayState extends State {
                 co.setRemove(true); //when collide it becomes true
                 if(co.isRemove()){  //becomes true
                     coin.removeIndex(i);//remove that particular coin in array
+                    duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
+                    duit.play(1f);
                     count = count + 10;
                     score += count;
                     //YourScoreName = "score: " + score;
@@ -267,6 +270,7 @@ public class PlayState extends State {
         ground.dispose();
         Crash.dispose();
         alienCrash.dispose();
+        duit.dispose();
         for (Obstacles obs : ob) {
             obs.dispose();
         }
