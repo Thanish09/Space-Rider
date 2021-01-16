@@ -14,16 +14,17 @@ public class GameOver extends State {
     private Texture background;
     private Texture restartBtn;
     private Texture closeBtn;
-    private Texture gameOver;
-    private PlayState play;
-    private String score;
     private Sprite restartSprite;
     private Sprite exitSprite;
-    BitmapFont font;
-    //public Sound alienCrash;
-    //public Sound Crash;
+    private String score;
 
-    public GameOver(GameStateManager gsm, String YourScoreName) {
+
+    private int highscore;
+
+
+    BitmapFont font;
+
+    public GameOver(GameStateManager gsm, String yourScoreName, int high) {
         super(gsm);
         cam.setToOrtho(false, Project1.WIDTH, Project1.HEIGHT );
         background = new Texture("GameOver.png");
@@ -33,10 +34,9 @@ public class GameOver extends State {
         restartSprite.setPosition((Project1.WIDTH/2) - (restartBtn.getWidth() / 2),Project1.HEIGHT/2);
         exitSprite = new Sprite(closeBtn);
         exitSprite.setPosition((Project1.WIDTH/2) - (closeBtn.getWidth() / 2),(Project1.HEIGHT/2)-150);
-        font = new BitmapFont();
-        score = YourScoreName;
-      //  alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-        //Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
+        font=new BitmapFont();
+        highscore=high;
+        score=yourScoreName;
     }
 
     @Override
@@ -69,14 +69,19 @@ public class GameOver extends State {
     //close box
     public void render(SpriteBatch sb) {
         sb.setProjectionMatrix(cam.combined);
-        //   states.dispose();
         sb.begin();
         sb.draw(background, cam.position.x - (cam.viewportWidth / 2), 0, Project1.WIDTH, Project1.HEIGHT);
-        sb.draw(restartSprite,((Project1.WIDTH / 2)-((restartBtn.getWidth()-200)/2)), ((Project1.WIDTH-500) / 2), 150, 50);
-        sb.draw(exitSprite,((Project1.WIDTH / 2)-((closeBtn.getWidth()-200)/2))+200, ((Project1.WIDTH-500) / 2), 150, 50);
-        font.setColor(1.0f,1.0f,1.0f,1.0f);
-        font.getData().setScale(3,3);
-        font.draw(sb,score,390,180);
+        sb.draw(restartSprite, ((Project1.WIDTH/2) - ((restartBtn.getWidth()-200) / 2)),((Project1.HEIGHT-500)/2),150,50);
+        sb.draw(exitSprite, ((Project1.WIDTH/2)-((closeBtn.getWidth()-200) /2))+200,((Project1.HEIGHT-500)/2),150,50);
+
+        font.setColor(1.0f, 1.0f, 1.0f, 1.0f);
+        font.getData().setScale(2,2);
+
+
+        font.draw(sb,String.valueOf("Highest score: "+highscore),340,135);
+
+
+        font.draw(sb, score, 390, 180);
         sb.end();
 
     }
@@ -86,7 +91,6 @@ public class GameOver extends State {
         background.dispose();
         restartBtn.dispose();
         closeBtn.dispose();
-        System.out.println("Menu state disposed");
     }
 
 }

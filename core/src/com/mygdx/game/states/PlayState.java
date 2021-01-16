@@ -3,6 +3,7 @@ package com.mygdx.game.states;
 
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.Input;
+        import com.badlogic.gdx.Preferences;
         import com.badlogic.gdx.audio.Sound;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -38,7 +39,6 @@ public class PlayState extends State {
     private Vector2 groundPos0, groundPos1, groundPos2, groundPos3,groundPos4;
     public Sound alienCrash;
     public Sound Crash;
-    public Sound Fly;
     public Sound duit;
     private Array<Obstacles> ob;
     private Array<Alien> alien;
@@ -52,6 +52,8 @@ public class PlayState extends State {
     private int gro =1;
     private int score;
     private String YourScoreName;
+    private static Preferences prefs;
+    private int high;
 
     BitmapFont yourBitmapFontName;
     int speed = 0;
@@ -64,6 +66,11 @@ public class PlayState extends State {
         score = 0;
         YourScoreName = "score: 0";
         yourBitmapFontName = new BitmapFont();
+
+        prefs = Gdx.app.getPreferences("Space Rider");
+        if(!prefs.contains("highscore")){
+            prefs.putInteger("highscore",0);
+        }
         rider = new Rider(10, 25);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
         bg = new Texture("bg1.jpg");
@@ -106,6 +113,15 @@ public class PlayState extends State {
         }
     }
 
+    public static void setHighScore(int val){
+        prefs.putInteger("highscore",val);
+        prefs.flush();
+    }
+
+    public static int getHighScore(){
+        return prefs.getInteger("highscore");
+    }
+
     @Override
     public void handleInput() {
         if (Gdx.input.justTouched()) {
@@ -129,6 +145,7 @@ public class PlayState extends State {
         multiplier += 0.2;
         multi = (int)multiplier;
         YourScoreName = "score: " + (score + multi);
+        int sco = score + multi;
         speed++;
         if(speed == 500){
             rider.getspeed();
@@ -204,7 +221,11 @@ public class PlayState extends State {
             if (obs.collide(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
-                gsm.set(new GameOver(gsm,YourScoreName));
+                if(sco>getHighScore()){
+                    setHighScore(sco);
+                }
+                high = getHighScore();
+                gsm.set(new GameOver(gsm,YourScoreName,high));
             }
         }
         for (int i = 0; i < fly.size; i++) {
@@ -215,7 +236,11 @@ public class PlayState extends State {
             if (flyUfo.collideFly(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
-                gsm.set(new GameOver(gsm,YourScoreName));
+                if(sco>getHighScore()){
+                    setHighScore(sco);
+                }
+                high = getHighScore();
+                gsm.set(new GameOver(gsm,YourScoreName,high));
             }
         }
         for (int i = 0; i < alien.size; i++) {
@@ -228,7 +253,11 @@ public class PlayState extends State {
             if (aliens.collide(rider.getBounds())) {
                 alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
                 alienCrash.play(1f);
-                gsm.set(new GameOver(gsm,YourScoreName));
+                if(sco>getHighScore()){
+                    setHighScore(sco);
+                }
+                high = getHighScore();
+                gsm.set(new GameOver(gsm,YourScoreName,high));
             }
         }
         cam.update();
