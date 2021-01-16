@@ -21,6 +21,7 @@ public class MenuStates extends State {
 
     public MenuStates(GameStateManager gsm) {
         super(gsm);
+        cam.setToOrtho(false, Project1.WIDTH, Project1.HEIGHT / 2);
         background = new Texture("bg.jpg");
         playBtn = new Texture("play2.png");
         closeBtn = new Texture("close.png");
@@ -58,6 +59,7 @@ public class MenuStates extends State {
     //close box
     public void render(SpriteBatch sb) {
         sb.begin();
+        sb.setProjectionMatrix(cam.combined);
         sb.draw(background, 0, 0, Project1.WIDTH, Project1.HEIGHT);
         sb.draw(playSprite,(Project1.WIDTH/2) - (playBtn.getWidth() / 2),Project1.HEIGHT/2);
         sb.draw(exitSprite, (Project1.WIDTH/2) - (closeBtn.getWidth() / 3),Project1.HEIGHT/5);

@@ -44,6 +44,7 @@ public class PlayState extends State {
     private int count = 0;
     private double multiplier = 0;
     private int multi;
+    private int gro =1;
     private int score;
     private String YourScoreName;
 
@@ -60,13 +61,13 @@ public class PlayState extends State {
         yourBitmapFontName = new BitmapFont();
         rider = new Rider(10, 25);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
-        bg = new Texture("bg.jpg");
+        bg = new Texture("bg1.jpg");
 
         // bullet code starts
         bullets = new ArrayList<Bullet>(); // officially created the bullets list
         // bullet code ends
 
-        ground = new Texture("ground.png");
+        ground = new Texture("ground.jpg");
         groundPos0 = new Vector2(-200, GROUND_Y_OFFSET);
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
@@ -122,6 +123,19 @@ public class PlayState extends State {
         if(speed == 5000){
             rider.getspeed();
             speed = 0;
+            if(gro == 0)
+                bg = new Texture("bg1.jpg");
+            else if(gro == 1)
+                bg = new Texture("bg2.jpg");
+            else if(gro == 2)
+                bg = new Texture("bg3.jpg");
+            else if(gro == 3)
+                bg = new Texture("bg4.jpg");
+
+            if(gro == 3)
+                gro = 0;
+            else
+                gro++;
         }
         int xy = 30+ rand.nextInt(fluctuation); //random position of coins y position
         int coinss = 500 + rand.nextInt(500); //random position of coins x position
@@ -173,14 +187,14 @@ public class PlayState extends State {
                 alienCrash.play(1f);
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(0f);
-                gsm.set(new GameOver(gsm));
+                gsm.set(new GameOver(gsm,YourScoreName));
             }
             if (obs.collide(rider.getBounds())) {
                 Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
                 Crash.play(1f);
                 alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
                 alienCrash.play(0f);
-                gsm.set(new GameOver(gsm));
+                gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
         for (int i = 0; i < fly.size; i++) {
@@ -193,7 +207,7 @@ public class PlayState extends State {
                 Crash.play(0f);
                 alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
                 alienCrash.play(0f);
-                gsm.set(new GameOver(gsm));
+                gsm.set(new GameOver(gsm,YourScoreName));
             }
         }
         cam.update();
