@@ -121,16 +121,16 @@ public class PlayState extends State {
         multi = (int)multiplier;
         YourScoreName = "score: " + (score + multi);
         speed++;
-        if(speed == 100){
+        if(speed == 500){
             rider.getspeed();
             speed = 0;
             if(gro == 0) {
                 bg = new Texture("bg1.jpg");
-                ground = new Texture("Land1.png");
+                ground = new Texture("Land 1.png");
             }
             else if(gro == 1) {
                 bg = new Texture("bg2.jpg");
-                ground = new Texture("Land2.png");
+                ground = new Texture("Land 2.png");
             }
             else if(gro == 2) {
                 bg = new Texture("bg3.jpg");
@@ -138,7 +138,7 @@ public class PlayState extends State {
             }
             else if(gro == 3) {
                 bg = new Texture("bg4.jpg");
-                ground = new Texture("Land4.png");
+                ground = new Texture("Land 4.png");
             }
 
             if(gro == 3)

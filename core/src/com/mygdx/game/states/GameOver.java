@@ -1,6 +1,7 @@
 package com.mygdx.game.states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -13,6 +14,7 @@ public class GameOver extends State {
     private Texture gameOver;
     private PlayState play;
     private String score;
+    private String highscore;
     BitmapFont font;
     //public Sound alienCrash;
     //public Sound Crash;
