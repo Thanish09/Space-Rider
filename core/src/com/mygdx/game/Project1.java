@@ -12,7 +12,7 @@ import com.mygdx.game.states.GameStateManager;
 import com.mygdx.game.states.MenuStates;
 
 public class Project1 extends Game {
-	public static final int WIDTH = 500;			//screen size
+	public static final int WIDTH = 1100;			//screen size
 	public static final int HEIGHT = 600;
 	public static final String TITLE = "Space Rider";
 	private GameStateManager gsm;

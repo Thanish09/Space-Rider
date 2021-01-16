@@ -10,7 +10,7 @@ import com.mygdx.game.states.PlayState;
 
 public class Rider {
     private static final int GRAVITY =-15;
-    private static final int MOVEMENT=100;
+    private int MOVEMENT=100;
     private Vector3 position;
     public Vector3 velocity;
     private Rectangle bounds;
@@ -70,5 +70,12 @@ public class Rider {
     {
         rider.dispose();
         rideSound.dispose();
+    }
+
+    public void getspeed(){
+        MOVEMENT += 50;
+        if(MOVEMENT > 350){
+            MOVEMENT = 350;
+        }
     }
 }

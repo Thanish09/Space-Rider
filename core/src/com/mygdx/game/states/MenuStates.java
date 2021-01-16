@@ -27,7 +27,7 @@ public class MenuStates extends State {
         playSprite = new Sprite(playBtn);
         playSprite.setPosition((Project1.WIDTH/2) - (playBtn.getWidth() / 2),Project1.HEIGHT/2);
         exitSprite = new Sprite(closeBtn);
-        exitSprite.setPosition(200,150);
+        exitSprite.setPosition((Project1.WIDTH/2) - (closeBtn.getWidth() / 2),Project1.HEIGHT/5);
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MenuStates extends State {
         sb.begin();
         sb.draw(background, 0, 0, Project1.WIDTH, Project1.HEIGHT);
         sb.draw(playSprite,(Project1.WIDTH/2) - (playBtn.getWidth() / 2),Project1.HEIGHT/2);
-        sb.draw(exitSprite, 200,150);
+        sb.draw(exitSprite, (Project1.WIDTH/2) - (closeBtn.getWidth() / 3),Project1.HEIGHT/5);
         sb.end();
 
     }

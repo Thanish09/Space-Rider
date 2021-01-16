@@ -46,7 +46,7 @@ public class GameOver extends State {
         //   states.dispose();
         sb.begin();
         sb.draw(background, cam.position.x - (cam.viewportWidth / 2), 0, Project1.WIDTH, Project1.HEIGHT);
-        sb.draw(gameOver,cam.position.x - (cam.viewportWidth / 2)+100, 100, Project1.WIDTH/6, Project1.HEIGHT/6);
+        sb.draw(gameOver,cam.position.x - (cam.viewportWidth / 2)+180, 100, Project1.WIDTH/6, Project1.HEIGHT/6);
         sb.end();
 
     }
