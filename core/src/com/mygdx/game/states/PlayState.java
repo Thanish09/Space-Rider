@@ -25,7 +25,7 @@ public class PlayState extends State {
     private static final int coins_spacing = 5;
     private static final int fluctuation = 250;
     private static final int coins_counts = 15;
-    private static final int GROUND_Y_OFFSET = -85;
+    private static final int GROUND_Y_OFFSET = -110;
     private static final int OBSTACLES_SPACING = 400;
     private static final int OBSTACLES_SPACING2 = 700;
     private static final int OBSTACLES_COUNT = 3;
@@ -68,7 +68,7 @@ public class PlayState extends State {
         bullets = new ArrayList<Bullet>(); // officially created the bullets list
         // bullet code ends
 
-        ground = new Texture("ground.png");
+        ground = new Texture("Land.png");
         groundPos0 = new Vector2(-200, GROUND_Y_OFFSET);
         groundPos1 = new Vector2(cam.position.x - cam.viewportWidth / 2, GROUND_Y_OFFSET);
         groundPos2 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth(), GROUND_Y_OFFSET);
@@ -121,17 +121,25 @@ public class PlayState extends State {
         multi = (int)multiplier;
         YourScoreName = "score: " + (score + multi);
         speed++;
-        if(speed == 5000){
+        if(speed == 100){
             rider.getspeed();
             speed = 0;
-            if(gro == 0)
+            if(gro == 0) {
                 bg = new Texture("bg1.jpg");
-            else if(gro == 1)
+                ground = new Texture("Land1.png");
+            }
+            else if(gro == 1) {
                 bg = new Texture("bg2.jpg");
-            else if(gro == 2)
+                ground = new Texture("Land2.png");
+            }
+            else if(gro == 2) {
                 bg = new Texture("bg3.jpg");
-            else if(gro == 3)
+                ground = new Texture("Land3.png");
+            }
+            else if(gro == 3) {
                 bg = new Texture("bg4.jpg");
+                ground = new Texture("Land4.png");
+            }
 
             if(gro == 3)
                 gro = 0;
