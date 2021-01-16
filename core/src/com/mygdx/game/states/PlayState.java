@@ -5,6 +5,7 @@ package com.mygdx.game.states;
         import com.badlogic.gdx.Input;
         import com.badlogic.gdx.audio.Sound;
         import com.badlogic.gdx.graphics.Texture;
+        import com.badlogic.gdx.graphics.g2d.BitmapFont;
         import com.badlogic.gdx.graphics.g2d.SpriteBatch;
         import com.badlogic.gdx.math.Vector2;
         import com.badlogic.gdx.utils.Array;
@@ -40,13 +41,21 @@ public class PlayState extends State {
     private Array<FlyingUfo> fly;
     private GameOver over;
     private Random rand;
-    int count = 0;
+    private int count = 0;
+    private int score;
+    private String YourScoreName;
+
+    BitmapFont yourBitmapFontName;
+    int speed = 0;
     // for bullets, the dynamic list is created. we do not know how many bullet will be shoot
     ArrayList<Bullet> bullets; // the type of obj stored = Bullet and the name of this list = bullets
     ArrayList<Bullet> bullets_to_remove;
 
     public PlayState(GameStateManager gsm) {
         super(gsm);
+        score = 0;
+        YourScoreName = "score: 0";
+        yourBitmapFontName = new BitmapFont();
         rider = new Rider(10, 25);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
         bg = new Texture("bg.jpg");
@@ -104,12 +113,11 @@ public class PlayState extends State {
         //updateCoin();
         rider.update(dt);
         cam.position.x = rider.getPosition().x + 80;
-        count++;
-        if(count == 5000){
+        speed++;
+        if(speed == 5000){
             rider.getspeed();
-            count = 0;
+            speed = 0;
         }
-        System.out.println("Count" + count);
         int xy = 30+ rand.nextInt(fluctuation); //random position of coins y position
         int coinss = 500 + rand.nextInt(500); //random position of coins x position
 
@@ -121,6 +129,9 @@ public class PlayState extends State {
                 co.setRemove(true); //when collide it becomes true
                 if(co.isRemove()){  //becomes true
                     coin.removeIndex(i);//remove that particular coin in array
+                    count = count + 1;
+                    score = count;
+                    YourScoreName = "score: " + score;
                 }
             }
         }
@@ -132,6 +143,7 @@ public class PlayState extends State {
         }
         else
             updateCoin(); //reposition coins at front of frame
+
         //  bullet codes
         bullets_to_remove = new ArrayList<Bullet>();
         for (Bullet bullet : bullets) // will loop through each bullet
@@ -190,6 +202,9 @@ public class PlayState extends State {
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(rider.getTexture(), rider.getPosition().x, rider.getPosition().y);
 
+        yourBitmapFontName.setColor(1.0f,1.0f,1.0f,1.0f);
+        yourBitmapFontName.draw(sb, YourScoreName, rider.getPosition().x + 200, 250);
+
         // bullet code..taking in input from the user
         if(Gdx.input.justTouched()){
             if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)
@@ -207,6 +222,10 @@ public class PlayState extends State {
         for(Coins co : coin){
             sb.draw(co.getCoins(), co.getPosCoins().x, co.getPosCoins().y);
         }
+
+        /*for(Coins co : coin){
+            sb.draw(co.getCoins(), co.getPosCoins().x, co.getPosCoins().y);
+        }*/
 
         for (Obstacles obs : ob) {
             sb.draw(obs.getUfo(), obs.getPosUfo().x, obs.getPosUfo().y);
@@ -255,7 +274,6 @@ public class PlayState extends State {
         }
     }
     private void updateCoin(){
-
         int yui = 30 + rand.nextInt(fluctuation);
         int iuy = 900 + rand.nextInt(1000);
         Coins co = coin.get(0);
