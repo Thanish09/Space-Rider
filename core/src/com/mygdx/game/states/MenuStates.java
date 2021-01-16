@@ -21,26 +21,26 @@ public class MenuStates extends State {
 
     public MenuStates(GameStateManager gsm) {
         super(gsm);
-        cam.setToOrtho(false, Project1.WIDTH, Project1.HEIGHT / 2);
-        background = new Texture("bg.jpg");
-        playBtn = new Texture("play2.png");
-        closeBtn = new Texture("close.png");
+        cam.setToOrtho(false, Project1.WIDTH, Project1.HEIGHT);
+        background = new Texture("background.png");
+        playBtn = new Texture("Play.png");
+        closeBtn = new Texture("Quit.png");
         playSprite = new Sprite(playBtn);
         playSprite.setPosition((Project1.WIDTH/2) - (playBtn.getWidth() / 2),Project1.HEIGHT/2);
         exitSprite = new Sprite(closeBtn);
-        exitSprite.setPosition((Project1.WIDTH/2) - (closeBtn.getWidth() / 2),Project1.HEIGHT/5);
+        exitSprite.setPosition(200,150);
     }
 
     @Override
     public void handleInput() //We use override command to change the default handleInput method to the one we will define now
     {
         if (Gdx.input.isTouched()) {
-            if (playSprite.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY())) {
+            if((Gdx.input.getX()<(Gdx.graphics.getWidth())/2)  && (Gdx.input.getY()>Gdx.graphics.getHeight()/2)){
                 gsm.set(new PlayState(gsm));
                 dispose();
             }
 
-            if (exitSprite.getBoundingRectangle().contains(Gdx.input.getX(), Gdx.graphics.getHeight()-Gdx.input.getY())) {
+            if(Gdx.input.getX()>Gdx.graphics.getWidth()/2  && Gdx.input.getY()>Gdx.graphics.getHeight()/2){
                 Gdx.app.exit();
                 dispose();
             }
@@ -58,11 +58,11 @@ public class MenuStates extends State {
     //open box...store inside box
     //close box
     public void render(SpriteBatch sb) {
-        sb.begin();
         sb.setProjectionMatrix(cam.combined);
+        sb.begin();
         sb.draw(background, 0, 0, Project1.WIDTH, Project1.HEIGHT);
-        sb.draw(playSprite,(Project1.WIDTH/2) - (playBtn.getWidth() / 2),Project1.HEIGHT/2);
-        sb.draw(exitSprite, (Project1.WIDTH/2) - (closeBtn.getWidth() / 3),Project1.HEIGHT/5);
+        sb.draw(playSprite,((Project1.WIDTH/2) - ((playBtn.getWidth()-200) / 2)),((Project1.HEIGHT-360)/2),150,50);
+        sb.draw(exitSprite, ((Project1.WIDTH/2)-((closeBtn.getWidth()-200) /2))+200,((Project1.HEIGHT-360)/2),150,50);
         sb.end();
 
     }
