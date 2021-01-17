@@ -141,6 +141,9 @@ public class PlayState extends State {
         updateGround();
         //updateCoin();
         rider.update(dt);
+        Obstacles obs;
+        FlyingUfo flyUfo;
+        Alien aliens;
         cam.position.x = rider.getPosition().x + 80;
         multiplier += 0.2;
         multi = (int)multiplier;
@@ -205,16 +208,36 @@ public class PlayState extends State {
         for (Bullet bullet : bullets) // will loop through each bullet
         {
             bullet.update_bullet(dt);
-            if(bullet.remove_bullet)
+            if(bullet.dropBullet(cam.position.x + (cam.viewportWidth / 2)))
             {
                 bullets_to_remove.add(bullet);
             }
         }
-        bullets.removeAll(bullets_to_remove); // will remove all the bullets added into this list
+        if(ob.size == 0 )
+        {
+            for (int j = 1; j <= OBSTACLES_COUNT; j++)
+            {
+                ob.add(new Obstacles(j * (OBSTACLES_SPACING + Obstacles.UFO_WIDTH)));
+            }
+        }
+        if(alien.size == 0 )
+        {
+            for (int j = 1; j <= OBSTACLES_COUNT; j++)
+            {
+                alien.add(new Alien(j * (OBSTACLE_SPACING3+ Alien.ALIEN_WIDTH)));
+            }
+        }
+        if(fly.size == 0 )
+        {
+            for (int j = 1; j <= OBSTACLES_COUNT; j++)
+            {
+                fly.add(new FlyingUfo(j * (rand.nextInt(300) +OBSTACLES_SPACING2 + FlyingUfo.OBSTACLES_WIDTH)));
+            }
+        }
         // bullet code ends
 
         for (int i = 0; i < ob.size; i++) {
-            Obstacles obs = ob.get(i);
+            obs = ob.get(i);
             if (cam.position.x - (cam.viewportWidth / 2) > obs.getPosUfo().x + obs.getUfo().getWidth()) {
                 obs.reposition(obs.getPosUfo().x + ((obs.UFO_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
@@ -229,7 +252,7 @@ public class PlayState extends State {
             }
         }
         for (int i = 0; i < fly.size; i++) {
-            FlyingUfo flyUfo= fly.get(i);
+            flyUfo= fly.get(i);
             if (cam.position.x - (cam.viewportWidth / 2) > flyUfo.getPosFly().x + flyUfo.getFlyingUfo().getWidth()) {
                 flyUfo.repositionFly(flyUfo.getPosFly().x + ((flyUfo.OBSTACLES_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
@@ -244,7 +267,7 @@ public class PlayState extends State {
             }
         }
         for (int i = 0; i < alien.size; i++) {
-            Alien aliens = alien.get(i);
+            aliens = alien.get(i);
 
             if (cam.position.x - (cam.viewportWidth / 2) > aliens.getPosAlien().x + aliens.getAlien().getWidth()) {
                 aliens.reposition(aliens.getPosAlien().x + ((aliens.ALIEN_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
@@ -260,6 +283,46 @@ public class PlayState extends State {
                 gsm.set(new GameOver(gsm,YourScoreName,high));
             }
         }
+        for (Bullet bullet : bullets) // when th bullet hit a target, the target disappears
+        {
+            for(int i = 0; i < ob.size; i++)
+            {
+                obs = ob.get(i);
+                if((bullet.bulletHitUfo(obs.getBoundsUfo())) && (!bullet.dropBullet(cam.position.x + (cam.viewportWidth / 2))) )
+                {
+                    bullets_to_remove.add(bullet);
+                    ob.removeIndex(i);
+                    count = count + 20;
+                    score += count;
+                    //System.out.println("num of ufo left : " + ob.size);
+                }
+            }
+            for(int k = 0; k < alien.size; k++)
+            {
+                aliens = alien.get(k);
+                if((bullet.bulletHitAlien(aliens.getBoundsAlien())) && (!bullet.dropBullet(cam.position.x + (cam.viewportWidth / 2))) )
+                {
+                    bullets_to_remove.add(bullet);
+                    alien.removeIndex(k);
+                    count = count + 20;
+                    score += count;
+                    //System.out.println("num of alien left : " + ob.size);
+                }
+            }
+            for(int p = 0; p < fly.size; p++)
+            {
+                flyUfo = fly.get(p);
+                if((bullet.bulletHitFly(flyUfo.getBoundsFly())) && (!bullet.dropBullet(cam.position.x + (cam.viewportWidth / 2))) )
+                {
+                    bullets_to_remove.add(bullet);
+                    fly.removeIndex(p);
+                    count = count + 20;
+                    score += count;
+                    //System.out.println("num of fly ufo left " + fly.size);
+                }
+            }
+        }
+        bullets.removeAll(bullets_to_remove); // will remove all the bullets added into this list
         cam.update();
     }
 

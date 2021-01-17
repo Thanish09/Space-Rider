@@ -33,7 +33,7 @@ public class FlyingUfo {
     }
     public void repositionFly(float x)
     {
-        posFly.set(x, rand.nextInt(100)+100);
+        posFly.set(x, rand.nextInt(100)+150);
         boundsFly.setPosition(posFly.x,posFly.y);
     }
     public boolean collideFly(Rectangle player)
@@ -41,6 +41,9 @@ public class FlyingUfo {
         return player.overlaps(boundsFly);
     }
 
+    public Rectangle getBoundsFly() {
+        return boundsFly;
+    }
 
     public void dispose()
     {

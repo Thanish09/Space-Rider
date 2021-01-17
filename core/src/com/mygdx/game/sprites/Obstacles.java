@@ -51,6 +51,11 @@ public class Obstacles {
         return player.overlaps(boundsUfo);//||player.overlaps(boundsAlien);
     }
 
+    public Rectangle getBoundsUfo()
+    {
+        return boundsUfo;
+    }
+
     public void dispose()
     {
         ufo.dispose();
