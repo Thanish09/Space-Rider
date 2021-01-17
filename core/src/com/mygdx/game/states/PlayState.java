@@ -42,6 +42,7 @@ public class PlayState extends State {
     public Music alienCrash;
     public Music Crash;
     public Music duit;
+    public Music shooting;
     private Array<Obstacles> ob;
     private Array<Alien> alien;
     private Array<Coins> coin;
@@ -341,6 +342,9 @@ public class PlayState extends State {
             if(Gdx.input.getX() < Gdx.graphics.getWidth()/2)
             {
                 bullets.add(new Bullet(rider.getPosition().y,rider.getPosition().x));  // this the place for you to add the bullets to the motorbike, the display part
+                shooting=Gdx.audio.newMusic(Gdx.files.internal("shooting.mp3"));
+                shooting.setVolume(1f);
+                shooting.play();
             }
         }
 
