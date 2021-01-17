@@ -71,7 +71,7 @@ public class PlayState extends State {
         if(!prefs.contains("highscore")){
             prefs.putInteger("highscore",0);
         }
-        rider = new Rider(10, 25);
+        rider = new Rider(-90, 25);
         cam.setToOrtho(false, Project1.WIDTH / 2, Project1.HEIGHT / 2);
         bg = new Texture("bg1.jpg");
 
@@ -150,7 +150,7 @@ public class PlayState extends State {
         YourScoreName = "score: " + (score + multi);
         int sco = score + multi;
         speed++;
-        if(speed == 500){
+        if(speed == 5000){
             rider.getspeed();
             speed = 0;
             if(gro == 0) {
