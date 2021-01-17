@@ -43,8 +43,8 @@ public class GameOver extends State {
     public void handleInput() {
         if (Gdx.input.isTouched()) {
             if ((Gdx.input.getX()<(Gdx.graphics.getWidth()/2)) && (Gdx.input.getY()>(Gdx.graphics.getHeight()/2 ))) {
-                gsm.set(new PlayState(gsm));
                 dispose();
+                gsm.set(new PlayState(gsm));
             }
             if ((Gdx.input.getX() > (Gdx.graphics.getWidth()/2)) && (Gdx.input.getY()>(Gdx.graphics.getHeight()/2 ))) {
                 Gdx.app.exit();
