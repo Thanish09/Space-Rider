@@ -1,24 +1,16 @@
 package com.mygdx.game.sprites;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.Random;
 
-import sun.font.TextRecord;
 
 public class Obstacles {
 
-    //public static final int OBSTACLES_WIDTH=52;
     public static final int UFO_WIDTH=52;
-  //  public static final int ALIEN_WIDTH=52;
-  //  private static final int FLUCTUATION = 130;
-   // private static final int TUBE_GAP =100;
-   // private static final int LOWEST_OPENING = 120
- //   private static final int FLUCTUATION =130;
     private Texture ufo;
     private Vector2 posUfo;
     private Rectangle boundsUfo;

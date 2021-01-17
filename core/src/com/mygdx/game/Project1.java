@@ -36,15 +36,11 @@ public class Project1 extends Game {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);//wipes screen clean and redraws
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.render(batch);
-//		batch.begin();
-//		batch.draw(img, 0, 0);
-//		batch.end();
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
 		music.dispose();
-	//	img.dispose();
 	}
 }

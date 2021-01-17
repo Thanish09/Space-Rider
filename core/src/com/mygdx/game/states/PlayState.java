@@ -4,6 +4,7 @@ package com.mygdx.game.states;
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.Input;
         import com.badlogic.gdx.Preferences;
+        import com.badlogic.gdx.audio.Music;
         import com.badlogic.gdx.audio.Sound;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,6 +19,7 @@ package com.mygdx.game.states;
         import com.mygdx.game.sprites.Rider;
         import com.mygdx.game.sprites.FlyingUfo;
         import com.mygdx.game.sprites.Bullet;
+        import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
 
         import java.util.Random;
         import java.util.ArrayList;
@@ -31,15 +33,15 @@ public class PlayState extends State {
     private static final int OBSTACLES_SPACING = 500;
     private static final int OBSTACLES_SPACING2 = 700;
     private static final int OBSTACLE_SPACING3 = 500;
-    private static final int OBSTACLES_COUNT = 3;
+    private static final int OBSTACLES_COUNT = 7;
 
     private Rider rider;
     private Texture bg;
     private Texture ground;
     private Vector2 groundPos0, groundPos1, groundPos2, groundPos3,groundPos4;
-    public Sound alienCrash;
-    public Sound Crash;
-    public Sound duit;
+    public Music alienCrash;
+    public Music Crash;
+    public Music duit;
     private Array<Obstacles> ob;
     private Array<Alien> alien;
     private Array<Coins> coin;
@@ -51,11 +53,11 @@ public class PlayState extends State {
     private int multi;
     private int gro =1;
     private int score;
-    private String YourScoreName;
+    private String Score;
     private static Preferences prefs;
     private int high;
 
-    BitmapFont yourBitmapFontName;
+    BitmapFont font;
     int speed = 0;
     // for bullets, the dynamic list is created. we do not know how many bullet will be shoot
     ArrayList<Bullet> bullets; // the type of obj stored = Bullet and the name of this list = bullets
@@ -64,8 +66,8 @@ public class PlayState extends State {
     public PlayState(GameStateManager gsm) {
         super(gsm);
         score = 0;
-        YourScoreName = "score: 0";
-        yourBitmapFontName = new BitmapFont();
+        Score = "score: 0";
+       font = new BitmapFont();
 
         prefs = Gdx.app.getPreferences("Space Rider");
         if(!prefs.contains("highscore")){
@@ -86,8 +88,6 @@ public class PlayState extends State {
         groundPos3 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth() + ground.getWidth(), GROUND_Y_OFFSET);
         groundPos4 = new Vector2((cam.position.x - cam.viewportWidth / 2) + ground.getWidth() + ground.getWidth() + ground.getWidth(), GROUND_Y_OFFSET);
 
-        //alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-        //Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
         rand = new Random();
         int xy = 30+ rand.nextInt(fluctuation);
         int coinss = 300 + rand.nextInt(500);
@@ -139,7 +139,6 @@ public class PlayState extends State {
     public void update(float dt) {
         handleInput();
         updateGround();
-        //updateCoin();
         rider.update(dt);
         Obstacles obs;
         FlyingUfo flyUfo;
@@ -147,7 +146,7 @@ public class PlayState extends State {
         cam.position.x = rider.getPosition().x + 80;
         multiplier += 0.2;
         multi = (int)multiplier;
-        YourScoreName = "score: " + (score + multi);
+        Score = "score: " + (score + multi);
         int sco = score + multi;
         speed++;
         if(speed == 5000){
@@ -186,11 +185,11 @@ public class PlayState extends State {
                 co.setRemove(true); //when collide it becomes true
                 if(co.isRemove()){  //becomes true
                     coin.removeIndex(i);//remove that particular coin in array
-                    duit= Gdx.audio.newSound(Gdx.files.internal("coin up.mp3"));
-                    duit.play(1f);
+                    duit= Gdx.audio.newMusic(Gdx.files.internal("coin up.mp3"));
+                    duit.setVolume(1F);
+                    duit.play();
                     count = count + 10;
                     score += count;
-                    //YourScoreName = "score: " + score;
                 }
             }
         }
@@ -242,13 +241,14 @@ public class PlayState extends State {
                 obs.reposition(obs.getPosUfo().x + ((obs.UFO_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
             if (obs.collide(rider.getBounds())) {
-                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
-                Crash.play(1f);
+                Crash=Gdx.audio.newMusic(Gdx.files.internal("UFO crash.mp3"));
+               Crash.setVolume(1F);
+                Crash.play();
                 if(sco>getHighScore()){
                     setHighScore(sco);
                 }
                 high = getHighScore();
-                gsm.set(new GameOver(gsm,YourScoreName,high));
+                gsm.set(new GameOver(gsm,Score,high));
             }
         }
         for (int i = 0; i < fly.size; i++) {
@@ -257,13 +257,14 @@ public class PlayState extends State {
                 flyUfo.repositionFly(flyUfo.getPosFly().x + ((flyUfo.OBSTACLES_WIDTH + OBSTACLES_SPACING) * OBSTACLES_COUNT));
             }
             if (flyUfo.collideFly(rider.getBounds())) {
-                Crash=Gdx.audio.newSound(Gdx.files.internal("UFO crash.mp3"));
-                Crash.play(1f);
+                Crash=Gdx.audio.newMusic(Gdx.files.internal("UFO crash.mp3"));
+                Crash.setVolume(1F);
+                Crash.play();
                 if(sco>getHighScore()){
                     setHighScore(sco);
                 }
                 high = getHighScore();
-                gsm.set(new GameOver(gsm,YourScoreName,high));
+                gsm.set(new GameOver(gsm,Score,high));
             }
         }
         for (int i = 0; i < alien.size; i++) {
@@ -274,13 +275,14 @@ public class PlayState extends State {
             }
 
             if (aliens.collide(rider.getBounds())) {
-                alienCrash= Gdx.audio.newSound(Gdx.files.internal("Alien Death.mp3"));
-                alienCrash.play(1f);
+                alienCrash= Gdx.audio.newMusic(Gdx.files.internal("Alien Death.mp3"));
+                alienCrash.setVolume(1F);
+                alienCrash.play();
                 if(sco>getHighScore()){
                     setHighScore(sco);
                 }
                 high = getHighScore();
-                gsm.set(new GameOver(gsm,YourScoreName,high));
+                gsm.set(new GameOver(gsm,Score,high));
             }
         }
         for (Bullet bullet : bullets) // when th bullet hit a target, the target disappears
@@ -294,7 +296,6 @@ public class PlayState extends State {
                     ob.removeIndex(i);
                     count = count + 20;
                     score += count;
-                    //System.out.println("num of ufo left : " + ob.size);
                 }
             }
             for(int k = 0; k < alien.size; k++)
@@ -306,7 +307,6 @@ public class PlayState extends State {
                     alien.removeIndex(k);
                     count = count + 20;
                     score += count;
-                    //System.out.println("num of alien left : " + ob.size);
                 }
             }
             for(int p = 0; p < fly.size; p++)
@@ -318,7 +318,6 @@ public class PlayState extends State {
                     fly.removeIndex(p);
                     count = count + 20;
                     score += count;
-                    //System.out.println("num of fly ufo left " + fly.size);
                 }
             }
         }
@@ -334,8 +333,8 @@ public class PlayState extends State {
         sb.draw(bg, cam.position.x - (cam.viewportWidth / 2), 0);
         sb.draw(rider.getTexture(), rider.getPosition().x, rider.getPosition().y);
 
-        yourBitmapFontName.setColor(1.0f,1.0f,1.0f,1.0f);
-        yourBitmapFontName.draw(sb, YourScoreName, rider.getPosition().x + 200, 250);
+        font.setColor(1.0f,1.0f,1.0f,1.0f);
+        font.draw(sb, Score, rider.getPosition().x + 200, 250);
 
         // bullet code..taking in input from the user
         if(Gdx.input.justTouched()){
@@ -354,10 +353,6 @@ public class PlayState extends State {
         for(Coins co : coin){
             sb.draw(co.getCoins(), co.getPosCoins().x, co.getPosCoins().y);
         }
-
-        /*for(Coins co : coin){
-            sb.draw(co.getCoins(), co.getPosCoins().x, co.getPosCoins().y);
-        }*/
 
         for (Obstacles obs : ob) {
             sb.draw(obs.getUfo(), obs.getPosUfo().x, obs.getPosUfo().y);
@@ -380,9 +375,6 @@ public class PlayState extends State {
         bg.dispose();
         rider.dispose();
         ground.dispose();
-        //Crash.dispose();
-        //alienCrash.dispose();
-        //duit.dispose();
         for (Obstacles obs : ob) {
             obs.dispose();
         }

@@ -1,6 +1,5 @@
 package com.mygdx.game.sprites;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -10,7 +9,6 @@ public class Bullet
 {
     public static final int BULLET_SPEED = 800;
     private static Texture bullet_texture;
-    //float bullet_x, bullet_y;
     private Vector2 bulletPos;
     private Rectangle boundsBullet;
     public boolean remove_bullet = false; // checks if the object should be removed from the list
@@ -18,8 +16,6 @@ public class Bullet
     // the x value is static while the y value is not since the rider moves up & down only
     public Bullet (float bullet_y, float bullet_x) // constructor
     {
-        //this.bullet_y = bullet_y; // this y value is where the rider wil be
-        //this.bullet_x = bullet_x ;
         if(bullet_texture == null)
         {
             bullet_texture = new Texture("shoot1.png"); // setting the image for the bullet

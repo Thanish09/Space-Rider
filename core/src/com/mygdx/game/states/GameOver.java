@@ -24,10 +24,10 @@ public class GameOver extends State {
 
     BitmapFont font;
 
-    public GameOver(GameStateManager gsm, String yourScoreName, int high) {
+    public GameOver(GameStateManager gsm, String Score, int high) {
         super(gsm);
         cam.setToOrtho(false, Project1.WIDTH, Project1.HEIGHT );
-        background = new Texture("GameOver.png");
+        background = new Texture("over.png");
         restartBtn = new Texture("NewGame.png");
         closeBtn = new Texture("Quit.png");
         restartSprite = new Sprite(restartBtn);
@@ -36,22 +36,17 @@ public class GameOver extends State {
         exitSprite.setPosition((Project1.WIDTH/2) - (closeBtn.getWidth() / 2),(Project1.HEIGHT/2)-150);
         font=new BitmapFont();
         highscore=high;
-        score=yourScoreName;
+        score=Score;
     }
 
     @Override
     public void handleInput() {
-        if(Gdx.input.justTouched())
-        {
-            dispose();
-            gsm.set(new PlayState(gsm));
-        }
         if (Gdx.input.isTouched()) {
-            if ((Gdx.input.getX()<(Gdx.graphics.getWidth())/2) && (Gdx.input.getY()>Gdx.graphics.getHeight()/2 )) {
+            if ((Gdx.input.getX()<(Gdx.graphics.getWidth()/2)) && (Gdx.input.getY()>(Gdx.graphics.getHeight()/2 ))) {
                 gsm.set(new PlayState(gsm));
                 dispose();
             }
-            if (Gdx.input.getX() > Gdx.graphics.getWidth()/2 && Gdx.input.getY()>Gdx.graphics.getHeight()/2 ) {
+            if ((Gdx.input.getX() > (Gdx.graphics.getWidth()/2)) && (Gdx.input.getY()>(Gdx.graphics.getHeight()/2 ))) {
                 Gdx.app.exit();
                 dispose();
             }

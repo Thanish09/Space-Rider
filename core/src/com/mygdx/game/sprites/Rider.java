@@ -1,6 +1,7 @@
 package com.mygdx.game.sprites;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -10,14 +11,14 @@ import com.mygdx.game.states.PlayState;
 
 public class Rider {
     private static final int GRAVITY =-15;
-    private int MOVEMENT=100;
+    private int MOVEMENT=150;
     private Vector3 position;
     public Vector3 velocity;
     private Rectangle bounds;
     private RiderAnimation riderAni;
     private Texture rider;
     private boolean colliding;
-    private Sound rideSound;
+    private Music rideSound;
 
     public Rider(int x, int y)
     {
@@ -27,10 +28,10 @@ public class Rider {
         riderAni=new RiderAnimation(new TextureRegion(rider),2,0.1f);
         bounds= new Rectangle(x,y,rider.getWidth()/3,rider.getHeight());
         colliding=false;
-        rideSound= Gdx.audio.newSound(Gdx.files.internal("motor riding.mp3"));
-        //rideSound.setLooping(rideSound.loop(),true);
-        rideSound.loop();
-        rideSound.play(1.0f);
+        rideSound= Gdx.audio.newMusic(Gdx.files.internal("motor riding.mp3"));
+        rideSound.setLooping(true);
+        rideSound.setVolume(1f);
+        rideSound.play();
     }
     public void update(float dt)
     {

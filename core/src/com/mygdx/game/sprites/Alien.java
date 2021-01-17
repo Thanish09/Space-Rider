@@ -3,19 +3,11 @@ package com.mygdx.game.sprites;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-
 import java.util.Random;
-
-
 
 public class Alien {
 
     public static final int ALIEN_WIDTH=150;
-
-    public static int getAlienWidth() {
-        return ALIEN_WIDTH;
-    }
-
     private Texture  alien;
     private Vector2 posAlien;
     private Rectangle boundsAlien;
@@ -46,6 +38,9 @@ public class Alien {
     {
         posAlien.set(x,10);
         boundsAlien.setPosition(posAlien.x,posAlien.y);
+    }
+    public static int getAlienWidth() {
+        return ALIEN_WIDTH;
     }
 
     public boolean collide(Rectangle player)

@@ -15,7 +15,6 @@ public class Coins {
     protected boolean hit, remove;
 
     public Coins(float x, float y){
-        //coins = new Texture("co.png");
         posCoins = new Vector2(x, y);
         texture = new Texture("coinsheet.png");
         coinAni = new Animation(new TextureRegion(texture), 6, 0.5f);
